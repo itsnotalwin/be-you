@@ -19,3 +19,5 @@ Mood phone review candidate (2026-10-17): `responsive.css` adds a scoped under-7
 Screenshot evidence now exists on PR #3: five real 390×844 selected-state frames plus 390/320 phone and 1280 desktop captures. Keep these filenames and the visual spec synchronized after a substantive mood change. Do not mark a draft capture as a published screenshot.
 
 Desktop candidate (2026-10-17): `functional.js` adds only `mood-v2-body`/`mood-v2-picker` layout wrappers; `responsive.css` places the **same** portrait and interactive picker side-by-side ≥1024px. New `tests/browser.spec.mjs` checks desktop visibility, plus phone card/Continue bounds. Updated desktop screenshot shows the complete selector within 1280×800; subject to PR checks and user approval.
+
+2026-10-17 mood portrait PR #3: Reuse Good's 306:562 fixed portrait frame for every mood, with object-fit cover and a small bounded crop rather than five differing heights. Preserve original artwork and a single reactive route. Refresh real screenshots and rerun tests before publishing.
