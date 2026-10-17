@@ -1,0 +1,71 @@
+name: Capture mood chooser review from real browser
+
+on:
+  push:
+    branches:
+      - ui/mood-chooser-visibility-20261017
+    paths:
+      - 'app/responsive.css'
+      - 'app/functional.js'
+      - 'app/tests/capture-mood-review.mjs'
+      - 'app/tests/browser.spec.mjs'
+      - '.github/workflows/mood-review.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: be-you-mood-review-20261017
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser dependency
+        working-directory: app
+        run: npm install --no-package-lock
+      - name: Verify original app integrity and persistence
+        working-directory: app
+        run: npm test
+      - name: Install Chromium
+        working-directory: app
+        run: npx playwright install --with-deps chromium
+      - name: Start the actual local application
+        run: |
+          (cd app && node server.mjs) &
+          for i in $(seq 1 45); do
+            if curl -fsS 'http://127.0.0.1:4173/?screen=mood' >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS 'http://127.0.0.1:4173/?screen=mood' >/dev/null
+      - name: Capture each approved portrait and real phone/desktop UI
+        run: node app/tests/capture-mood-review.mjs
+      - name: Commit genuine screenshot evidence to review branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/SCREENSHOT-MOBILE-MOOD*.png app/SCREENSHOT-DESKTOP-MOOD.png app/SCREENSHOT-MOOD-*.png
+          if git diff --cached --quiet; then
+            echo 'No screenshot differences.'
+          else
+            git commit -m 'test: capture real mood chooser across all five approved states'
+            git push origin 'HEAD:refs/heads/ui/mood-chooser-visibility-20261017'
+          fi
+      - name: Upload rendered screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mood-real-browser-review
+          path: |
+            app/SCREENSHOT-MOBILE-MOOD*.png
+            app/SCREENSHOT-DESKTOP-MOOD.png
+            app/SCREENSHOT-MOOD-*.png
+          if-no-files-found: warn
+          retention-days: 14

@@ -47,3 +47,5 @@ Requires Node.js 18+. `cd app && npm start` opens `http://localhost:4173`; `cd a
 - `references/`: older approved artwork boards and original inspiration.
 
 **Remaining production gates:** physical iOS/Android installation and layout checks, deployed Pages inspection, accessibility review, and security/privacy audit.
+
+**Mood chooser review (2026-10-17):** [Review proposed compact phone layout and genuine browser screenshots](https://github.com/itsnotalwin/Be-you/pull/3). The five approved mood portraits have not changed. This review branch shows the choice controls without scrolling past a full-height portrait; the live app is unchanged until the reviewed PR is merged and deployed. The historical `SCREENSHOT-MOBILE-MOOD.png` on `main` will be replaced with this genuine updated capture only after release approval.

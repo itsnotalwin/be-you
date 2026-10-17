@@ -564,14 +564,16 @@ body.theme-light .mood-v3-feedback span{color:#555c5e}
 }
 @media(prefers-reduced-motion:reduce){.mood-v2 .mood-v3-options .mood-v3-option{transition:none;transform:none}}
 
-/* Screen 05 — five approved full-frame portraits.
-   The source files are tall panels (~300 x 562), not square thumbnails.
-   Let the image determine its frame height so it touches all four edges:
-   no cover-cropping, distortion, or empty letterboxing. */
+/* Screen 05 — one stable PORTRAIT frame for all five approved illustrations.
+   Sources are 291–306 × 562. Match Good's 306:562 silhouette; Good stays
+   identical, while other moods crop at most ~5% top/bottom to fill the
+   same portrait bounds. No stretching or square thumbnails. */
 .device[data-page="mood"] .mood-v2-art{
  width:min(100%,306px);
  max-width:100%;
+ aspect-ratio:306 / 562;
  height:auto;
+ position:relative;
  margin:18px auto 23px;
  background:#f2eee8;
  border:1px solid #75746e;
@@ -580,9 +582,11 @@ body.theme-light .mood-v3-feedback span{color:#555c5e}
 }
 .device[data-page="mood"] .mood-v2-art img{
  display:block;
+ position:absolute;
+ inset:0;
  width:100%;
- height:auto;
- object-fit:contain;
+ height:100%;
+ object-fit:cover;
  object-position:center center;
  filter:grayscale(1);
 }
@@ -591,4 +595,60 @@ body.theme-light .mood-v3-feedback span{color:#555c5e}
 }
 @media(max-width:370px){
  .device[data-page="mood"] .mood-v2-art{width:min(100%,276px);height:auto}
+}
+
+
+/* MOOD PHONE REVIEW — 2026-10-17.
+   Keep the approved art in a consistent full-bleed portrait frame while bringing
+   the five choices into the initial phone viewport, with minimal safe crop.
+   Scoped to Screen 05 on mobile; no changes to other art or app routes. */
+@media (max-width:699px) {
+  .device[data-page="mood"] .mood-v2 { padding-top:0; }
+  .device[data-page="mood"] .mood-v2 h1 {
+    font-size:clamp(38px,10vw,43px);
+    line-height:.96;
+    margin-bottom:9px;
+  }
+  .device[data-page="mood"] .mood-v2-lede { margin-bottom:10px; }
+  .device[data-page="mood"] .mood-v2-art {
+    width:min(50vw,220px,23dvh);
+    max-width:100%;
+    height:auto;
+    margin:9px auto 12px;
+  }
+  .device[data-page="mood"] .mood-v2-select legend {
+    font-size:clamp(23px,6vw,28px);
+    margin-bottom:8px;
+  }
+  .device[data-page="mood"] .mood-v3-feedback { min-height:58px; margin:3px 0 6px; }
+}
+
+
+/* DESKTOP MOOD REVIEW — 2026-10-17.
+   Keep the same portrait frame and five reactive controls within the
+   first desktop viewport. Mobile preserves its vertical editorial layout. */
+@media (min-width:1024px) {
+  .device[data-page="mood"] .mood-v2 { max-width:920px; }
+  .device[data-page="mood"] .mood-v2-body {
+    display:grid;
+    grid-template-columns:minmax(230px,300px) minmax(0,1fr);
+    align-items:center;
+    gap:clamp(28px,4vw,58px);
+    margin-top:8px;
+  }
+  .device[data-page="mood"] .mood-v2-body .mood-v2-art {
+    width:min(100%,270px);
+    max-width:100%;
+    height:auto;
+    margin:0 auto;
+  }
+  .device[data-page="mood"] .mood-v2-picker {min-width:0;}
+  .device[data-page="mood"] .mood-v2-picker .mood-v2-select legend {
+    font-size:clamp(25px,2.3vw,31px);
+  }
+  .device[data-page="mood"] .mood-v2-picker .mood-v3-options {gap:8px;}
+  .device[data-page="mood"] .mood-v2-picker .mood-v3-option {
+    min-height:93px;
+    border-radius:17px;
+  }
 }

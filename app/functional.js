@@ -74,7 +74,9 @@ screens.mood=()=>pane('Today','today',`<section class="mood-v2" data-selected-mo
 <div class="eyebrow">A MOMENT TO NOTICE</div>
 <h1 id="mood-v2-title">How are you<br>feeling today?</h1>
 <p class="mood-v2-lede">There is no right answer. Just yours.</p>
+<div class="mood-v2-body">
 <div class="mood-v2-art"><img id="mood-portrait" loading="eager" decoding="async" src="${moodPortraitSrc(selectedMood)}" alt="${moodPortraitAlt(selectedMood)}"></div>
+<div class="mood-v2-picker">
 <fieldset class="mood-v2-select">
 <legend>Choose what feels closest</legend>
 <div class="mood-v2-options mood-v3-options">${moodDefs.map(([key,label])=>moodButton(key,label)).join('')}</div>
@@ -85,6 +87,7 @@ screens.mood=()=>pane('Today','today',`<section class="mood-v2" data-selected-mo
 </div>
 <button type="button" class="mood-v2-next mood-v3-next" data-screen="mood-details"><span>Continue</span>${ico('arrow')}</button>
 <p class="mood-v2-hint">You can add a little context next.</p>
+</div></div>
 </section>`);
 /* The previously working tags, energy, note and save flow continues here. */
 /* Approved Screen 06 — mood details. Preserves actual check-in saving on this device. */

@@ -58,6 +58,12 @@ for(const file of moodFiles){
     record.sha256!==createHash('sha256').update(readFileSync(path.join(root,file))).digest('hex'))
     error.push('Mood inventory checksum mismatch: '+file);
 }
-if(!responsive.includes('object-fit:contain'))error.push('Mood artwork must preserve entire face and hair');
+const frameRule=responsive.match(/\.device\[data-page="mood"\] \.mood-v2-art\s*\{([^}]+)\}/)?.[1]||'';
+const imageRule=responsive.match(/\.device\[data-page="mood"\] \.mood-v2-art img\s*\{([^}]+)\}/)?.[1]||'';
+if(!frameRule.includes('aspect-ratio:306 / 562')||
+   !imageRule.includes('object-fit:cover')||
+   !imageRule.includes('width:100%')||
+   !imageRule.includes('height:100%'))
+  error.push('All five moods must fill one fixed portrait frame proportionally');
 if(error.length){console.error('BE YOU verification FAILED:\n - '+error.join('\n - '));process.exit(1)}
 console.log(`BE YOU unified app verified: ${destinations.length} real screens, ${approved.length} artwork roles / ${assets.length} approved images, coordinated CSS, five distinct mood portraits, safe PWA offline shell.`);
